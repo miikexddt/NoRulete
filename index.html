@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Ruleta de la Mala Suerte - Aplicación web gratuita para seleccionar participantes aleatoriamente en clase o juegos. Fácil, rápida y con efectos de sonido.">
+    <meta name="keywords"
+        content="ruleta, sorteo, aleatorio, clase, participación, estudiantes, juegos, random picker, wheel of fortune">
+    <meta name="author" content="Ruleta de la Mala Suerte">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#1a1a2e">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://miikexddt.github.io/NoRulete/">
+    <meta property="og:title" content="NoRulete - Ruleta de la Mala Suerte">
+    <meta property="og:description"
+        content="¡Gira la ruleta y decide quién es el siguiente! Herramienta premium para profesores y dinámicas de grupo.">
+    <meta property="og:image" content="https://miikexddt.github.io/NoRulete/luck_fixed.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="NoRulete - Ruleta de la Mala Suerte">
+    <meta property="twitter:description"
+        content="¡Gira la ruleta y decide quién es el siguiente! Herramienta premium para profesores y dinámicas de grupo.">
+
+    <title>NoRulete - Ruleta de la Mala Suerte | Sorteo Aleatorio Online</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Page Loader -->
+    <div id="page-loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <p>Cargando...</p>
+        </div>
+    </div>
+
+    <!-- Splash Screen (New) -->
+    <div id="splashScreen" class="splash-screen">
+        <div class="splash-content">
+            <h1 class="splash-welcome">Bienvenido a</h1>
+
+            <video id="splashVideo" class="splash-video" playsinline preload="auto" autoplay loop muted>
+                <source src="vidInicio.mp4" type="video/mp4">
+                Tu navegador no soporta video HTML5.
+            </video>
+
+            <p class="splash-subtitle">Sorteos transparentes, resultados verificables.</p>
+
+            <button id="splashStartBtn" class="btn btn--primary btn--lg pulse-animation">
+                EMPEZAR
+            </button>
+        </div>
+    </div>
+
+
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header__nav">
+                <button id="goToStartBtn" class="btn btn--secondary btn--home" title="Ir al Inicio / Cambiar Modo">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    Inicio
+                </button>
+            </div>
+            <h1 class="header__title">Ruleta de la mala suerte</h1>
+            <p class="header__subtitle">¿Quién será el siguiente?</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Left Panel: Input & Wheel -->
+            <section class="left-panel">
+                <!-- Name Input Area -->
+                <div class="input-section" id="inputSection">
+                    <h2 class="section-title">
+                        <svg class="icon icon--title" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
+                        </svg>
+                        Lista de Participantes
+                    </h2>
+                    <textarea id="namesInput" class="names-textarea"
+                        placeholder="Pega aquí los nombres&#10;(un nombre por línea)&#10;&#10;Ejemplo:&#10;María García&#10;Juan Pérez&#10;Ana López"
+                        rows="8"></textarea>
+                    <button id="loadNamesBtn" class="btn btn--primary btn--full">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" x2="12" y1="15" y2="3"></line>
+                        </svg>
+                        Cargar Nombres
+                    </button>
+                </div>
+
+                <!-- Wheel Section -->
+                <div class="wheel-section" id="wheelSection">
+                    <div class="wheel-container">
+                        <div class="wheel-pointer"></div>
+                        <canvas id="wheelCanvas" width="400" height="400"></canvas>
+                    </div>
+
+                    <div class="wheel-controls">
+                        <div class="controls-row">
+                            <button id="spinBtn" class="btn btn--spin" disabled>
+                                <svg class="icon icon--spin" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
+                                </svg>
+                                ¡GIRAR!
+                            </button>
+                            <button id="shuffleBtn" class="btn btn--icon" title="Mezclar Nombres"
+                                aria-label="Mezclar lista de nombres" disabled>
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22"></path>
+                                    <path d="m18 2 4 4-4 4"></path>
+                                    <path d="M2 6h1.9c1.5 0 2.9.9 3.6 2.2"></path>
+                                    <path d="M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8"></path>
+                                    <path d="m18 14 4 4-4 4"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <p class="remaining-text" id="remainingText">Carga nombres para comenzar</p>
+                        <button id="backToInputBtn" class="btn btn--secondary btn--back">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                                <path d="M3 3v5h5"></path>
+                            </svg>
+                            Volver a cargar nombres
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Panel: Results Table -->
+            <section class="right-panel">
+                <div class="results-section">
+                    <h2 class="section-title">
+                        <svg class="icon icon--title" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <path d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Z"></path>
+                        </svg>
+                        Resultados
+                    </h2>
+
+                    <div class="table-container">
+                        <!-- Losers Table (Only for Giveaway Mode) -->
+                        <div id="losersSection" class="losers-section hidden">
+                            <h3 class="table-subtitle subtitle--losers">
+                                <svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="m15 9-6 6"></path>
+                                    <path d="m9 9 6 6"></path>
+                                </svg>
+                                Eliminados
+                            </h3>
+                            <table class="results-table table--losers" id="losersTable">
+                                <thead>
+                                    <tr>
+                                        <th class="table-header">#</th>
+                                        <th class="table-header">Participante</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="losersBody"></tbody>
+                            </table>
+                        </div>
+
+                        <!-- Winners/Standard Table -->
+                        <div id="winnersSection">
+                            <h3 class="table-subtitle subtitle--winners" id="winnersTitle">
+                                <svg class="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                                    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                                    <path d="M4 22h16"></path>
+                                    <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                                    <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                                    <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+                                </svg>
+                                Lista de Ganadores
+                            </h3>
+                            <table class="results-table" id="resultsTable">
+                                <thead>
+                                    <tr>
+                                        <th class="table-header table-header--order">#</th>
+                                        <th class="table-header table-header--name">Participante</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resultsBody">
+                                    <!-- Results will be inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="empty-state" id="emptyState">
+                            <svg class="icon icon--empty" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2">
+                                </path>
+                                <path d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Z"></path>
+                            </svg>
+                            <p class="empty-state__text">Los participantes seleccionados aparecerán aquí</p>
+                        </div>
+                    </div>
+
+                    <!-- Official Mode Toggle -->
+                    <div class="official-mode-toggle">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="officialModeToggle">
+                            <span class="toggle-switch"></span>
+                            <span class="toggle-text">
+                                <svg class="icon icon--xs" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+                                </svg>
+                                Modo Oficial
+                            </span>
+                        </label>
+                    </div>
+
+                    <!-- Transparency Indicators (Official Mode Only) -->
+                    <div class="transparency-indicators hidden" id="transparencySection">
+                        <span class="indicator">
+                            <svg class="icon icon--xs" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
+                            </svg>
+                            Giros: <strong id="spinCount">0</strong>
+                        </span>
+                        <span class="indicator">
+                            <svg class="icon icon--xs" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                                <path d="M3 3v5h5"></path>
+                            </svg>
+                            Reinicios: <strong id="resetCount">0</strong>
+                        </span>
+                    </div>
+
+                    <div class="results-actions">
+                        <!-- Official Mode: Export PDF -->
+                        <button id="exportPdfBtn" class="btn btn--secondary hidden" disabled>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            Exportar PDF
+                        </button>
+                        <button id="resetBtn" class="btn btn--danger">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                                <path d="M3 3v5h5"></path>
+                            </svg>
+                            Reiniciar
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Selected Name Modal/Overlay -->
+        <div class="winner-overlay" id="winnerOverlay">
+            <div class="winner-card">
+                <p class="winner-label">¡Siguiente participante!</p>
+                <h2 class="winner-name" id="winnerName"></h2>
+                <p class="winner-position" id="winnerPosition"></p>
+                <button id="continueBtn" class="btn btn--primary">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Continuar
+                </button>
+            </div>
+        </div>
+
+        <!-- Start Screen Overlay -->
+        <div class="start-screen" id="startScreen">
+
+            <div class="start-bg-shapes">
+                <div class="bg-shape shape-1"></div>
+                <div class="bg-shape shape-2"></div>
+                <div class="bg-shape shape-3"></div>
+            </div>
+            <div class="start-content">
+                <h1 class="start-title">Selecciona un modo</h1>
+                <p class="start-subtitle">¿Qué tipo de sorteo haremos hoy?</p>
+
+                <div class="mode-cards">
+                    <!-- Classroom Mode Card -->
+                    <div class="mode-card" id="modeClassroomBtn">
+                        <div class="mode-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 20h5v-2a3 3 0 0 0-5.356-1.857"></path>
+                                <path d="M17 20H7"></path>
+                                <path d="M7 20H2v-2a3 3 0 0 1 5.356-1.857"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                                <circle cx="19" cy="7" r="2"></circle>
+                                <circle cx="5" cy="7" r="2"></circle>
+                            </svg>
+                        </div>
+                        <h2 class="mode-name">Sorteo de Grupos</h2>
+                        <p class="mode-desc">Mantén el orden de exposición. Todos participan y ganan en el orden que
+                            salgan.</p>
+
+                        <!-- Classroom Settings -->
+                        <div class="mode-settings" id="classroomSettings">
+                            <button id="startClassroomBtn" class="btn btn--primary btn--sm">
+                                Comenzar Sorteo
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Giveaway Mode Card -->
+                    <div class="mode-card" id="modeGiveawayBtn">
+                        <div class="mode-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="8" width="18" height="14" rx="2"></rect>
+                                <path d="M12 8V5a2 2 0 0 0-2-2 2 2 0 0 0-2 2v3"></path>
+                                <path d="M12 8V5a2 2 0 0 1 2-2 2 2 0 0 1 2 2v3"></path>
+                                <path d="M12 8v14"></path>
+                                <path d="M3 12h18"></path>
+                            </svg>
+                        </div>
+                        <h2 class="mode-name">Sorteo General</h2>
+                        <p class="mode-desc">Elige cuántos serán eliminados hoy. ¡Los demás ganan!</p>
+
+                        <!-- Salados Settings -->
+                        <div class="mode-settings" id="giveawaySettings">
+                            <div class="settings-row">
+                                <div class="setting-group">
+                                    <label class="settings-label" for="losersCountSelect">¿Cuántos eliminados?</label>
+                                    <select id="losersCountSelect" class="settings-select">
+                                        <option value="0">Ninguno</option>
+                                        <option value="1">1</option>
+                                        <option value="2" selected>2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                                <div class="setting-group">
+                                    <label class="settings-label" for="winnersCountSelect">¿Cuántos ganadores?</label>
+                                    <select id="winnersCountSelect" class="settings-select">
+                                        <option value="0" selected>Todos</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button id="startGiveawayBtn" class="btn btn--primary btn--sm margin-top-sm">
+                                Comenzar Sorteo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Official Mode Confirmation Modal -->
+        <div class="modal-overlay" id="officialModeModal" role="dialog" aria-modal="true"
+            aria-labelledby="officialModeTitle">
+            <div class="modal-card modal-card--compact">
+                <div class="modal-header">
+                    <svg class="modal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"></path>
+                        <path d="m9 12 2 2 4-4"></path>
+                    </svg>
+                    <h2 class="modal-title" id="officialModeTitle">Modo Oficial</h2>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-summary">Activa un sorteo transparente con registro de giros y exportación PDF.</p>
+
+                    <button class="details-toggle" id="detailsToggle">
+                        <svg class="icon icon--xs" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                        Ver detalles
+                    </button>
+
+                    <ul class="modal-list hidden" id="modalDetailsList">
+                        <li>Selección aleatoria no modificable</li>
+                        <li>Registro de giros y reinicios</li>
+                        <li>Lista bloqueada durante el sorteo</li>
+                        <li>Exportación de resultados en PDF</li>
+                    </ul>
+                </div>
+                <div class="modal-actions">
+                    <button id="cancelOfficialModeBtn" class="btn btn--secondary">
+                        Cancelar
+                    </button>
+                    <button id="confirmOfficialModeBtn" class="btn btn--primary">
+                        Activar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confetti Container -->
+        <div class="confetti-container" id="confettiContainer"></div>
+
+        <footer class="app-footer">
+            <p>NoRulete — Proyecto personal desarrollado por <strong>MIQA</strong></p>
+            <button id="openSupportBtn" class="btn-link">Apoyo voluntario por Yape</button>
+        </footer>
+    </div>
+
+    <!-- Support Modal -->
+    <div id="support-modal" class="modal-overlay">
+        <div class="modal-card support-card">
+            <div class="modal-header">
+                <h3>Apoyo al Desarrollo</h3>
+            </div>
+            <div class="support-content">
+                <p><strong>NoRulete</strong><br>Proyecto personal desarrollado por MIQA</p>
+                <p class="support-text">Si la aplicación te resultó útil, puedes apoyar su desarrollo de forma
+                    voluntaria.</p>
+
+                <div class="qr-container">
+                    <img src="yape_qr.png" alt="QR Yape" class="qr-image">
+                    <p class="qr-caption">Apoyo voluntario por Yape</p>
+                </div>
+            </div>
+            <button id="closeSupportBtn" class="btn btn--secondary btn--full">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- html2canvas for capturing DOM -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
