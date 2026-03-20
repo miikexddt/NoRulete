@@ -1,0 +1,227 @@
+/* ============================================
+   App Container
+   ============================================ */
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-sm) var(--spacing-md);
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ============================================
+   Header
+   ============================================ */
+.header {
+    text-align: center;
+    padding: var(--spacing-xs) var(--spacing-md);
+    margin-bottom: var(--spacing-xs);
+    position: relative;
+    flex-shrink: 0;
+}
+
+.header__nav {
+    position: absolute;
+    top: var(--spacing-md);
+    left: var(--spacing-md);
+}
+
+.header__title {
+    font-size: var(--font-size-xl);
+    font-weight: 800;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0;
+    text-shadow: 0 0 40px rgba(99, 102, 241, 0.3);
+}
+
+.header__subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    font-weight: 400;
+}
+
+@media (max-width: 768px) {
+    .header__nav {
+        position: static;
+        margin-bottom: var(--spacing-md);
+    }
+}
+
+/* ============================================
+   Main Content Layout
+   ============================================ */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    flex: 1;
+    width: 100%;
+    min-height: 0; /* allow flex children to shrink below content size */
+}
+
+/* ============================================
+   Panels
+   ============================================ */
+.left-panel,
+.right-panel {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* allow flex shrinking */
+}
+
+.left-panel {
+    justify-content: center;
+    flex: 1;
+}
+
+.right-panel {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* ============================================
+   Tablet & Desktop (min-width: 768px)
+   ============================================ */
+@media (min-width: 768px) {
+    .app-container {
+        padding: var(--spacing-md);
+    }
+
+    .main-content {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: var(--spacing-lg);
+        align-items: stretch;
+        flex: 1;
+        min-height: 0;
+    }
+
+    .left-panel {
+        position: relative;
+        overflow: visible;
+    }
+
+    .right-panel {
+        overflow: hidden;
+    }
+
+    .table-container {
+        max-height: none;
+        flex: 1;
+        min-height: 0;
+    }
+
+    #wheelCanvas {
+        max-width: 100%;
+        max-height: 42vh;
+    }
+
+    .input-section {
+        max-width: 100%;
+    }
+}
+
+/* ============================================
+   Large Desktop / Projector (min-width: 1200px)
+   ============================================ */
+@media (min-width: 1200px) {
+    html {
+        font-size: 16px;
+    }
+
+    .app-container {
+        max-width: 1400px;
+    }
+
+    .main-content {
+        gap: var(--spacing-xl);
+    }
+
+    #wheelCanvas {
+        max-height: 48vh;
+    }
+}
+
+/* ============================================
+   Footer & Support Section
+   ============================================ */
+.app-footer {
+    text-align: center;
+    padding: var(--spacing-md) var(--spacing-xl);
+    background: var(--color-bg-secondary);
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    flex-shrink: 0;
+    width: 100%;
+    margin-top: 0;
+    border-radius: 0;
+    box-shadow: none;
+    max-width: none;
+}
+
+.app-footer strong {
+    color: var(--color-text);
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    margin-top: var(--spacing-xs);
+    opacity: 0.8;
+    transition: opacity var(--transition-fast);
+}
+
+.btn-link:hover {
+    opacity: 1;
+}
+
+/* ============================================
+   Focus / Projector Mode
+   ============================================ */
+.app-container.focus-mode .right-panel {
+    display: none;
+}
+
+.app-container.focus-mode .app-footer {
+    display: none;
+}
+
+.app-container.focus-mode .header__subtitle {
+    display: none;
+}
+
+.app-container.focus-mode .main-content {
+    grid-template-columns: 1fr;
+}
+
+.app-container.focus-mode .wheel-section {
+    padding-top: 40px;
+}
+
+.app-container.focus-mode #wheelCanvas {
+    max-height: 75vh;
+}
+
+.app-container.focus-mode .btn--back {
+    display: none;
+}
+
+#focusModeBtn.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+}
