@@ -360,13 +360,19 @@
     bottom: 0;
     background: var(--color-bg);
     z-index: 2000;
-    overflow-y: auto;
+    overflow: hidden;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    padding: 0;
+    align-items: center;
+    padding: var(--spacing-md);
     transition: opacity var(--transition-slow), visibility var(--transition-slow);
     opacity: 1;
+    overflow-y: auto; /* Fallback for very small screens */
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+}
+
+.start-screen::-webkit-scrollbar {
+    display: none; /* Hide scrollbar Chrome/Safari */
 }
 
 .start-screen.hidden {
@@ -420,16 +426,18 @@
     position: relative;
     text-align: center;
     max-width: 1000px;
-    width: 90%;
-    margin: 4rem auto;
-    animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    width: 95%;
+    margin: 0 auto;
+    transform: translateY(-5vh);
+    animation: content-enter 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     padding: var(--spacing-md);
     z-index: 10;
 }
 
 .start-title {
-    font-size: var(--font-size-4xl);
-    margin-bottom: var(--spacing-sm);
+    font-size: clamp(2rem, 5vh, 3.5rem);
+    margin-top: -2vh;
+    margin-bottom: var(--spacing-xs);
     background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -449,9 +457,9 @@
 }
 
 .start-subtitle {
-    font-size: var(--font-size-xl);
+    font-size: clamp(1rem, 2vh, 1.25rem);
     color: var(--color-text-secondary);
-    margin-bottom: var(--spacing-2xl);
+    margin-bottom: clamp(1rem, 3vh, 2rem);
 }
 
 .mode-cards {
@@ -466,8 +474,8 @@
     background: var(--color-bg-card);
     border: 2px solid var(--color-border);
     border-radius: var(--radius-xl);
-    padding: var(--spacing-xl);
-    width: 320px;
+    padding: clamp(1rem, 2vh, 2rem);
+    width: min(320px, 45vw);
     cursor: pointer;
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease, border-color 0.3s ease;
     will-change: transform;
@@ -553,7 +561,6 @@
 .start-screen.animate-in .start-content {
     animation: content-enter 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
-
 .start-screen.animate-in .start-bg-shapes {
     animation: shapes-enter 2s ease-out forwards;
 }
@@ -564,7 +571,7 @@
 }
 
 @keyframes shapes-enter {
-    from { opacity: 0; transform: scale(0.5); }
+    from { opacity: 1; transform: scale(1); }
     to { opacity: 1; transform: scale(1); }
 }
 
@@ -583,6 +590,101 @@
 @keyframes slide-down {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile Adjustments for Start Screen */
+@media (max-width: 600px) {
+    .start-content {
+        transform: translateY(-2vh); /* Slight lift for balance */
+        width: 98%;
+        padding: 0.5rem;
+    }
+
+    .start-title {
+        font-size: 2.2rem;
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .start-subtitle {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .mode-cards {
+        gap: 0.75rem;
+        flex-wrap: nowrap;
+        width: 100%;
+        padding: 0 0.5rem;
+    }
+
+    .mode-card {
+        flex: 1;
+        max-width: 200px;
+        padding: 1.25rem 0.75rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 220px; /* Give them some vertical presence */
+    }
+
+    .mode-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .mode-name {
+        font-size: 1.1rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .mode-desc {
+        font-size: 0.75rem;
+        line-height: 1.4;
+    }
+
+    /* Compact Settings for Mobile */
+    .mode-settings {
+        margin-top: 0.5rem;
+        padding-top: 0.5rem;
+        width: 100%;
+    }
+
+    .settings-row {
+        gap: 0.25rem;
+        margin-bottom: 0.5rem;
+        flex-direction: row; /* Ensure they stay side by side */
+    }
+
+    .setting-group {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .settings-label {
+        font-size: 0.6rem;
+        margin-bottom: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .settings-select {
+        padding: 6px 20px 6px 8px;
+        font-size: 0.75rem;
+        background-position: right 6px center;
+        background-size: 8px;
+    }
+
+    #startGiveawayBtn, 
+    #startClassroomBtn {
+        width: 100%;
+        padding: 6px 10px;
+        font-size: 0.75rem;
+        margin-top: 0.25rem;
+    }
 }
 
 /* ============================================
