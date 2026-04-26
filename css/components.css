@@ -223,12 +223,12 @@
     width: 100%;
     height: auto;
     max-height: 58vh;
-    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.4)) drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
     transition: filter var(--transition-base);
 }
 
 #wheelCanvas.spinning {
-    filter: drop-shadow(0 10px 40px rgba(99, 102, 241, 0.4));
+    filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.7)) drop-shadow(0 10px 40px rgba(0, 0, 0, 0.6));
     animation: single-pulse var(--spin-duration, 10s) ease-in-out forwards;
 }
 
