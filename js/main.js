@@ -732,12 +732,57 @@ document.addEventListener('DOMContentLoaded', init);
 // Remove Page Loader
 window.addEventListener('load', () => {
     const loader = document.getElementById('page-loader');
-    if (loader) {
+    if (!loader) return;
+
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isMobile) {
+        const subtext = document.getElementById('loader-subtext');
+        if (subtext) {
+            subtext.textContent = "Optimizando videos para móvil...";
+            subtext.style.display = 'block';
+        }
+
+        const videos = document.querySelectorAll('video');
+        let loadedVideos = 0;
+
+        const removeLoader = () => {
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                setTimeout(() => loader.remove(), 500);
+            }, 1000);
+        };
+
+        if (videos.length === 0) {
+            removeLoader();
+        } else {
+            // Max 4 seconds wait on mobile for videos
+            const timeout = setTimeout(removeLoader, 4000);
+
+            videos.forEach(v => {
+                if (v.readyState >= 3) {
+                    loadedVideos++;
+                } else {
+                    v.addEventListener('canplaythrough', () => {
+                        loadedVideos++;
+                        if (loadedVideos >= videos.length) {
+                            clearTimeout(timeout);
+                            removeLoader();
+                        }
+                    }, { once: true });
+                }
+            });
+
+            if (loadedVideos >= videos.length) {
+                clearTimeout(timeout);
+                removeLoader();
+            }
+        }
+    } else {
+        // PC Logic: Quick hide
         setTimeout(() => {
             loader.classList.add('hidden');
-            setTimeout(() => {
-                loader.remove();
-            }, 500);
+            setTimeout(() => loader.remove(), 500);
         }, 500);
     }
 });
