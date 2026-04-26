@@ -728,3 +728,25 @@
     border-color: var(--color-primary);
     box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
 }
+
+/* ============================================
+   Mobile Refinements for Video Backgrounds
+   ============================================ */
+@media (max-width: 768px) {
+    .input-section, 
+    .results-section {
+        background: rgba(30, 30, 60, 0.4); /* More transparent for video */
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .table-container {
+        background: rgba(15, 15, 35, 0.5); /* Semi-transparent table area */
+    }
+
+    .names-textarea {
+        background: rgba(15, 15, 35, 0.3);
+        font-size: var(--font-size-base); /* Slightly smaller text for mobile */
+    }
+}

@@ -382,6 +382,19 @@
     display: none;
 }
 
+.start-video-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.8; /* Subtle transparency to blend with background color */
+}
+
+
 /* Background shapes */
 .start-bg-shapes {
     position: absolute;
@@ -443,6 +456,7 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: title-pulse 3s infinite ease-in-out;
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 8px rgba(255, 255, 255, 0.4);
 }
 
 @keyframes title-pulse {
@@ -604,6 +618,7 @@
         font-size: 2.2rem;
         margin-top: 0;
         margin-bottom: 0.5rem;
+        text-shadow: 0 0 3px rgba(255, 255, 255, 0.9), 0 0 15px rgba(255, 255, 255, 0.4);
     }
 
     .start-subtitle {
@@ -627,6 +642,9 @@
         align-items: center;
         justify-content: center;
         min-height: 220px; /* Give them some vertical presence */
+        background: rgba(30, 30, 60, 0.4); /* More transparent on mobile */
+        backdrop-filter: blur(15px); /* Stronger blur for glass effect */
+        border-color: rgba(255, 255, 255, 0.1);
     }
 
     .mode-icon {

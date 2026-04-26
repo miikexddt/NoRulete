@@ -92,7 +92,13 @@
 
 
 
+    <video id="mainAppVideo" class="main-video-bg" playsinline preload="auto" autoplay loop muted>
+        <source src="fondo3.mp4" type="video/mp4">
+        Tu navegador no soporta video HTML5.
+    </video>
+
     <div class="app-container">
+
         <!-- Header -->
         <header class="header">
             <div class="header__nav">
@@ -106,7 +112,7 @@
                 </button>
             </div>
             <h1 class="header__title">Ruleta de la mala suerte</h1>
-            <p class="header__subtitle">¿Quién será el siguiente?</p>
+            <p class="header__subtitle">¿Quién será el primero?</p>
         </header>
 
         <!-- Main Content -->
@@ -330,6 +336,11 @@
 
         <!-- Start Screen Overlay -->
         <div class="start-screen" id="startScreen">
+            <video id="modeSelectionVideo" class="start-video-bg" playsinline preload="auto" autoplay loop muted>
+                <source src="fondo2.mp4" type="video/mp4">
+                Tu navegador no soporta video HTML5.
+            </video>
+
 
             <div class="start-bg-shapes">
                 <div class="bg-shape shape-1"></div>

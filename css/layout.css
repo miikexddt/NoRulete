@@ -11,7 +11,22 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    position: relative;
+    z-index: 1;
 }
+
+.main-video-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -10;
+    pointer-events: none;
+    opacity: 0.6; /* Balanced opacity for readability */
+}
+
 
 /* ============================================
    Header
@@ -38,7 +53,7 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin-bottom: 0;
-    text-shadow: 0 0 40px rgba(99, 102, 241, 0.3);
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .header__subtitle {
@@ -51,6 +66,11 @@
     .header__nav {
         position: static;
         margin-bottom: var(--spacing-md);
+    }
+
+    .header__title {
+        font-size: 1.8rem; /* Better fit for mobile */
+        text-shadow: 0 0 3px rgba(255, 255, 255, 0.9), 0 0 12px rgba(255, 255, 255, 0.4);
     }
 }
 
