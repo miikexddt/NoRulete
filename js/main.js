@@ -737,12 +737,6 @@ window.addEventListener('load', () => {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
     if (isMobile) {
-        const subtext = document.getElementById('loader-subtext');
-        if (subtext) {
-            subtext.textContent = "Optimizando videos para móvil...";
-            subtext.style.display = 'block';
-        }
-
         const videos = document.querySelectorAll('video');
         let loadedVideos = 0;
 
